@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #cfe3e6;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: #f2f248;
+            border: none;
+            border-radius: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .cell:hover {
+            background: #e6e63c;
+        }
+
+        #result {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        button.reset {
+            padding: 12px 25px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button.reset:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Tic Tac Toe</h1>
+
+<div class="board">
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+    <button class="cell"></button>
+</div>
+
+<h2 id="result"></h2>
+<button class="reset" onclick="resetGame()">Reset Game</button>
+
+<script>
+let cells = document.querySelectorAll(".cell");
+let board = Array(9).fill("");
+let current = "X";
+
+const winPatterns = [
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+cells.forEach((cell, i) => {
+    cell.addEventListener("click", () => {
+        if (board[i] !== "" || checkWin()) return;
+
+        board[i] = current;
+        cell.textContent = current;
+
+        if (checkWin()) {
+            document.getElementById("result").textContent = current + " Wins!";
+            return;
+        }
+
+        current = current === "X" ? "O" : "X";
+    });
+});
+
+function checkWin() {
+    return winPatterns.some(pattern => {
+        let [a,b,c] = pattern;
+        return board[a] && board[a] === board[b] && board[b] === board[c];
+    });
+}
+
+function resetGame() {
+    board.fill("");
+    cells.forEach(c => c.textContent = "");
+    document.getElementById("result").textContent = "";
+    current = "X";
+}
+</script>
+
+</body>
+</html>
